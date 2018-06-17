@@ -7,7 +7,7 @@ COPY *.cs ./
 RUN dotnet restore
 
 # copy and build everything else
-WORKDIR /app/
+WORKDIR /app
 COPY DotNetTestApp.csproj ./
 COPY *.cs ./
 RUN dotnet publish -c Release -o out
@@ -15,4 +15,4 @@ RUN dotnet publish -c Release -o out
 FROM microsoft/dotnet:2.1-runtime AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-ENTRYPOINT ["dotnet", "dotnetapp.dll"]
+ENTRYPOINT ["dotnet", "DotNetTestApp.dll"]
