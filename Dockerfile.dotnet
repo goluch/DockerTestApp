@@ -1,8 +1,18 @@
-FROM microsoft/dotnet
-COPY MonoTestApp.csproj ./
-COPY Program.cs ./
+FROM microsoft/dotnet:2.1-sdk AS build
+WORKDIR /app
+
+# copy csproj and restore as distinct layers
+COPY DotNetTestApp.csproj ./
+COPY *.cs ./
 RUN dotnet restore
-RUN dotnet build
 
-CMD [ "Program.exe" ]
+# copy and build everything else
+WORKDIR /app/
+COPY DotNetTestApp.csproj ./
+COPY *.cs ./
+RUN dotnet publish -c Release -o out
 
+FROM microsoft/dotnet:2.1-runtime AS runtime
+WORKDIR /app
+COPY --from=build /app/out ./
+ENTRYPOINT ["dotnet", "dotnetapp.dll"]
