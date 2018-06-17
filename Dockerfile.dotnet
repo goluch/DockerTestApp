@@ -1,0 +1,8 @@
+FROM microsoft/dotnet
+COPY MonoTestApp.csproj ./
+COPY Program.cs ./
+RUN dotnet restore
+RUN dotnet build
+
+CMD [ "Program.exe" ]
+

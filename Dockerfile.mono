@@ -1,0 +1,7 @@
+FROM mono
+COPY MonoTestApp.csproj ./
+COPY Program.cs ./
+RUN mono --version
+RUN msbuild ./MonoTestApp.csproj
+CMD [ "mono",  "Program.exe" ]
+
